@@ -1,5 +1,6 @@
 #!/bin/bash
 
+touch .env
 echo "Stopping existing container..."
 docker stop www-clear-badge-cache
 echo "Removing stopped containers and unused images..."

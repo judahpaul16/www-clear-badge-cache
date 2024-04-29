@@ -27,4 +27,4 @@ COPY --from=builder /app/static ./static
 
 EXPOSE 8080
 
-CMD ["air"]
+CMD ["./main"]
