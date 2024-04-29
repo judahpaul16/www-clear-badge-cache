@@ -17,6 +17,11 @@ type Templates struct {
 	templates *template.Template
 }
 
+type Response struct {
+	Status  string `json:"status"`
+	Message string `json:"message"`
+}
+
 func staticFunc(url string) string {
 	return "/static/" + url
 }
@@ -62,27 +67,42 @@ func clearCache(c echo.Context) error {
 	url := c.FormValue("url")
 	url = strings.Replace(url, " ", "", -1)
 	if url == "" {
-		return c.String(http.StatusBadRequest, "URL is required")
+		return jsonResponse(c, http.StatusBadRequest, "URL is required")
 	}
 
-	// Check if binary exists, if not clone it from https://github.com/judahpaul16/clear-badge-cache
-	if _, err := os.Stat("clear-badge-cache"); os.IsNotExist(err) {
-		cmd := exec.Command("git", "clone", "https://github.com/judahpaul16/clear-badge-cache")
-		cmd.Dir = "."
+	// Check if binaries exist
+	if _, err := os.Stat("binaries"); os.IsNotExist(err) {
+		return jsonResponse(c, http.StatusInternalServerError, "Binaries not found.")
+	} else {
+		executable := "clear-badge-cache"
+		if strings.Contains(strings.ToLower(os.Getenv("GOOS")), "windows") {
+			executable += ".exe"
+		} else {
+			executable += ".sh"
+		}
+		cmd := exec.Command("go", "run", executable, url)
+		cmd.Dir = "binaries"
 		err := cmd.Run()
 		if err != nil {
-			return c.String(http.StatusInternalServerError, "Error cloning clear-badge-cache")
+			return jsonResponse(c, http.StatusInternalServerError, fmt.Sprintf("Something went wrong, check your URL.<br>%v", err.Error()))
 		} else {
-			cmd = exec.Command("go", "run", "main.go", url)
-			cmd.Dir = "clear-badge-cache"
-			err := cmd.Run()
-			if err != nil {
-				return c.String(http.StatusInternalServerError, "Error running clear-badge-cache")
-			} else {
-				return c.String(http.StatusOK, fmt.Sprintf("Image cache for `%s` cleared successfully!", c.FormValue("url")))
-			}
+			return jsonResponse(c, http.StatusOK, fmt.Sprintf("Image cache for `%s` cleared successfully!", c.FormValue("url")))
 		}
 	}
+}
 
-	return nil
+func jsonResponse(c echo.Context, status int, message string) error {
+	var resp Response
+	if status < 300 {
+		resp = Response{
+			Status:  "Success",
+			Message: message,
+		}
+	} else {
+		resp = Response{
+			Status:  "Error",
+			Message: message,
+		}
+	}
+	return c.JSON(200, resp)
 }
