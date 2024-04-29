@@ -38,11 +38,11 @@
 3. Run the Docker container:
 
    ```bash
-   ./dev/dev.sh # linux or mac
+   ./build-scripts/build.sh # linux or mac
    ```
    or
    ```bash
-   ./dev/dev.bat # windows
+   ./build-scripts/build.bat # windows
    ```
 
    This will start the web server on `localhost:8080`.

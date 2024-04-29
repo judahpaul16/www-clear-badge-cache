@@ -5,6 +5,8 @@ import (
 	"html/template"
 	"io"
 	"net/http"
+	"os"
+	"os/exec"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -73,4 +75,6 @@ func clearCache(c echo.Context) error {
 			}
 		}
 	}
+
+	return nil
 }
