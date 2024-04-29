@@ -15,7 +15,7 @@
         <p>Enter the URL of the GitHub repo you want to clear the cache for.</p>
     </div>
     <div id="form-container">
-        <form hx-post="/clear-cache" hx-target="#message" hx-swap="innerHTML">
+        <form hx-post="/clear-cache" hx-target="#message" hx-swap="innerHTML" hx-indicator="#spinner">
             <input id="input-url" type="text" name="url" placeholder="Enter URL">
             <button id="clear-cache-btn" class="crowded padding padding-block allcaps" _="
                 on mouseenter
@@ -23,16 +23,17 @@
                         set rand to Math.random() * 360
                         transition
                         *background-color
-                        to `hsl($rand 100% 90%)`
+                        to `hsl($rand 100% 75%)`
                         over 250ms
                     end
                 "> Clear Cache
+                <img  id="spinner" class="htmx-indicator" src="{{ static "img/bars.svg" }}" alt="Loading...">
             </button>
         </form>
     </div>
     <div id="message" _="
         on htmx:afterSwap
-            if JSON.parse(me.textContent).response === 'Success'
+            if JSON.parse(me.textContent).status === 'Success'
                 set *background to `linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%)`
             else
                 set *background to `linear-gradient(90deg, #ff416c 0%, #ff4b2b 100%)`

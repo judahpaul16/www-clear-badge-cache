@@ -77,7 +77,7 @@ func clearCache(c echo.Context) error {
 	}
 
 	executable := "clear-badge-cache"
-	if strings.Contains(strings.ToLower(os.Getenv("GOOS")), "windows") {
+	if os := strings.ToLower(os.Getenv("OS")); strings.Contains(os, "windows") {
 		executable += ".exe"
 	} else {
 		executable += ".sh"
