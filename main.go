@@ -82,7 +82,7 @@ func clearCache(c echo.Context) error {
 	} else {
 		executable += ".sh"
 	}
-	cmd := exec.Command(executable, url)
+	cmd := exec.Command("./"+executable, url)
 	cmd.Dir = "binaries"
 
 	var outBuf, errBuf bytes.Buffer
@@ -91,7 +91,7 @@ func clearCache(c echo.Context) error {
 
 	err := cmd.Run()
 	if err != nil {
-		return jsonResponse(c, http.StatusInternalServerError, fmt.Sprintf("Something went wrong, check your URL.<br>%v<br>%v", errBuf.String(), err.Error()))
+		return jsonResponse(c, http.StatusInternalServerError, fmt.Sprintf("Something went wrong.<br>%v<br>%v", errBuf.String(), err.Error()))
 	}
 
 	return jsonResponse(c, http.StatusOK, fmt.Sprintf("Image cache for `%s` cleared successfully!", c.FormValue("url")))
