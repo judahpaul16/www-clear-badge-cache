@@ -18,14 +18,15 @@
         <form hx-post="/clear-cache" hx-target="#message" hx-swap="innerHTML" hx-indicator="#spinner">
             <input id="input-url" type="text" name="url" placeholder="Enter URL">
             <button id="clear-cache-btn" class="crowded padding padding-block allcaps" _="
-                on mouseenter
-                    repeat until event mouseleave
+                on load or mouseleave
+                    repeat until event mouseenter
                         set rand to Math.random() * 360
                         transition
                         *background-color
                         to `hsl($rand 100% 75%)`
-                        over 250ms
+                        over 600ms
                     end
+                end
                 "> Clear Cache
                 <img  id="spinner" class="htmx-indicator" src="{{ static "img/bars.svg" }}" alt="Loading...">
             </button>
