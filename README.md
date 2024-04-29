@@ -19,6 +19,7 @@
 - [Go](https://go.dev/dl/)
 - [HTMX](https://htmx.org/)
 - [HyperScript](https://hyperscript.org/)
+- [Docker (optional)](https://www.docker.com/)
 
 ### Installation 🛠
 
@@ -34,10 +35,14 @@
    cd www-clear-badge-cache
    ```
 
-3. Run the server:
+3. Run the Docker container:
 
    ```bash
-   air
+   ./dev/dev.sh # linux or mac
+   ```
+   or
+   ```bash
+   ./dev/dev.bat # windows
    ```
 
    This will start the web server on `localhost:8080`.
