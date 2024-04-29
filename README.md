@@ -35,14 +35,19 @@
    cd www-clear-badge-cache
    ```
 
-3. Run the Docker container:
+3. Run the app:
 
+   *Linux/Mac*
    ```bash
-   ./build-scripts/build.sh # linux or mac
+   ./build-scripts/build.sh # builds and runs docker container
    ```
-   or
+   *Windows*
    ```bash
-   ./build-scripts/build.bat # windows
+   ./build-scripts/build.bat # builds and runs docker container
+   ```
+   *If you would prefer not to use Docker run:*
+   ```bash
+   air
    ```
 
    This will start the web server on `localhost:8080`.
