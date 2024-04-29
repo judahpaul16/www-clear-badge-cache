@@ -2,8 +2,6 @@ module github.com/judahpaul16/www-clear-badge-cache
 
 go 1.22.2
 
-replace github.com/judahpaul16/www-clear-badge-cache/components => ./components
-
 require github.com/labstack/echo/v4 v4.12.0
 
 require (

@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -57,6 +58,13 @@ func main() {
 }
 
 func clearCache(c echo.Context) error {
+	// URL Validation
+	url := c.FormValue("url")
+	url = strings.Replace(url, " ", "", -1)
+	if url == "" {
+		return c.String(http.StatusBadRequest, "URL is required")
+	}
+
 	// Check if binary exists, if not clone it from https://github.com/judahpaul16/clear-badge-cache
 	if _, err := os.Stat("clear-badge-cache"); os.IsNotExist(err) {
 		cmd := exec.Command("git", "clone", "https://github.com/judahpaul16/clear-badge-cache")
@@ -65,7 +73,7 @@ func clearCache(c echo.Context) error {
 		if err != nil {
 			return c.String(http.StatusInternalServerError, "Error cloning clear-badge-cache")
 		} else {
-			cmd = exec.Command("go", "run", "main.go", c.FormValue("url"))
+			cmd = exec.Command("go", "run", "main.go", url)
 			cmd.Dir = "clear-badge-cache"
 			err := cmd.Run()
 			if err != nil {
