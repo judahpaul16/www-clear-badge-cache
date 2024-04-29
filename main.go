@@ -55,5 +55,22 @@ func main() {
 }
 
 func clearCache(c echo.Context) error {
-	return c.String(http.StatusOK, fmt.Sprintf("Image cache for `%s` cleared successfully!", c.FormValue("url")))
+	// Check if binary exists, if not clone it from https://github.com/judahpaul16/clear-badge-cache
+	if _, err := os.Stat("clear-badge-cache"); os.IsNotExist(err) {
+		cmd := exec.Command("git", "clone", "https://github.com/judahpaul16/clear-badge-cache")
+		cmd.Dir = "."
+		err := cmd.Run()
+		if err != nil {
+			return c.String(http.StatusInternalServerError, "Error cloning clear-badge-cache")
+		} else {
+			cmd = exec.Command("go", "run", "main.go", c.FormValue("url"))
+			cmd.Dir = "clear-badge-cache"
+			err := cmd.Run()
+			if err != nil {
+				return c.String(http.StatusInternalServerError, "Error running clear-badge-cache")
+			} else {
+				return c.String(http.StatusOK, fmt.Sprintf("Image cache for `%s` cleared successfully!", c.FormValue("url")))
+			}
+		}
+	}
 }
