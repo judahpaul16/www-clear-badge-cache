@@ -1,0 +1,57 @@
+{{ define "index" }}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Your GitHub Image Cache</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href={{ static "img/favicon.ico" }} type="image/x-icon">
+    <link rel="stylesheet" href={{ static "css/style.css" }}>
+</head>
+<body>
+    <div id="header">
+        <h1>Clear Your GitHub Image Cache</h1>
+        <p>Enter the URL of the GitHub repo you want to clear the cache for.</p>
+    </div>
+    <div id="form-container">
+        <form hx-post="/clear-cache" hx-target="#message" hx-swap="#message">
+            <input id="input-url" type="text" name="url" placeholder="Enter URL">
+            <button id="clear-cache-btn" class="crowded padding padding-block allcaps" _="
+                on mouseover
+                    set rand to Math.random() * 360
+                    transition *background-color
+                        to `hsl($rand, 100%, 80%)`
+                        over 200ms
+                on mouseout
+                    transition *background-color
+                        to `rgb(100, 181, 246)`   // Original button color
+                        over 200ms
+                "> Clear Cache
+            </button>
+        </form>
+    </div>
+    <div id="message" _="
+        on htmx:afterSwap
+            if me.textContent
+                if me.textContent.includes('success')
+                    set *background to `linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%)`
+                else
+                    set *background to `linear-gradient(90deg, #ff416c 0%, #ff4b2b 100%)`
+                end
+            end
+            transition *opacity
+                to 1
+                over 300ms
+            wait 3s
+            transition *opacity
+                to 0
+                over 300ms
+        end
+    "></div>
+    <script src={{ static "js/htmx.min.js" }}></script>
+    <script src={{ static "js/_hyperscript.min.js" }}></script>
+</body>
+</html>
+
+{{ end }}

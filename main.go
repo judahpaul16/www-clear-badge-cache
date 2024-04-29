@@ -1,42 +1,59 @@
 package main
 
 import (
-	"log"
+	"fmt"
+	"html/template"
+	"io"
 	"net/http"
-	"time"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
-func LoggingMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		start := time.Now()
-		// Log the incoming request
-		log.Printf("Received %s request for %s from %s", r.Method, r.URL.Path, r.RemoteAddr)
+type Templates struct {
+	templates *template.Template
+}
 
-		next.ServeHTTP(w, r) // pass control to the next handler
+func staticFunc(url string) string {
+	return "/static/" + url
+}
 
-		// Log the completion of the handling
-		log.Printf("Completed %s request for %s in %v", r.Method, r.URL.Path, time.Since(start))
-	})
+func newTemplate() *Templates {
+	funcMap := template.FuncMap{
+		"static": staticFunc,
+	}
+
+	tmpls, err := template.New("").Funcs(funcMap).ParseGlob("views/*.html")
+	if err != nil {
+		panic(err)
+	}
+	return &Templates{
+		templates: template.Must(tmpls, err),
+	}
+}
+
+func (t *Templates) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return t.templates.ExecuteTemplate(w, name, data)
 }
 
 func main() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", serveTemplate)
-	mux.HandleFunc("/clear-cache", clearCache)
+	e := echo.New()
+	e.Use(middleware.Logger())
+	e.Renderer = newTemplate()
 
-	// Wrap the ServeMux with the LoggingMiddleware
-	loggedMux := LoggingMiddleware(mux)
+	// Serve static files
+	fs := http.FileServer(http.Dir("./static/"))
+	e.GET("/static/*", echo.WrapHandler(http.StripPrefix("/static/", fs)))
 
-	log.Fatal(http.ListenAndServe(":8080", loggedMux))
+	e.GET("/", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "index", nil)
+	})
+
+	e.POST("/clear-cache", clearCache)
+
+	e.Logger.Fatal(e.Start(":8080"))
 }
 
-func serveTemplate(w http.ResponseWriter, r *http.Request) {
-	home := "index.html"
-	http.ServeFile(w, r, home)
-}
-
-func clearCache(w http.ResponseWriter, r *http.Request) {
-	url := r.FormValue("url")
-	log.Println("Cache cleared for URL:", url)
-	w.Write([]byte("Cache cleared for " + url))
+func clearCache(c echo.Context) error {
+	return c.String(http.StatusOK, fmt.Sprintf("Image cache for `%s` cleared successfully!", c.FormValue("url")))
 }

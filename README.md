@@ -5,18 +5,20 @@
 [![GitHub](https://img.shields.io/github/license/judahpaul16/clear-badge-cache)](LICENSE)
 [![Website](https://img.shields.io/badge/website-https://clear--badge--cache.com-blue)](https://clear-badge-cache.com/)
 
-[Clear-Badge-Cache.com](https://clear-badge-cache.com/) is a web-based tool designed to make it easier to clear the cache for GitHub badge images by providing a simple and intuitive user interface. This tool is based on the Clear Badge Cache CLI tool but adds a user-friendly web interface for the same functionality.
+[Clear-Badge-Cache.com](https://clear-badge-cache.com/) is a web-based tool designed to make it easier to clear the cache for GitHub badge images by providing a simple and intuitive user interface. This tool is based on the [Clear Badge Cache CLI tool](https://github.com/judahpaul16/clear-badge-cache) but adds a user-friendly web interface for the same functionality.
 
 ## Features 🌟
 
 - **Simple User Interface**: Just enter the URL of the badge you need to clear, and the cache will be cleared without needing to handle CLI operations.
-- **Built with Go, Templ, and HTMX**: Leveraging modern technologies for a lightweight and responsive experience.
+- **Built with Go, HTMX & HyperScript**: Leveraging modern technologies for a lightweight and responsive experience.
 
 ## Quick Start 🚀
 
 ### Prerequisites 📋
 
-- Go (1.22.2 or later)
+- [Go](https://go.dev/dl/)
+- [HTMX](https://htmx.org/)
+- [HyperScript](https://hyperscript.org/)
 
 ### Installation 🛠
 
@@ -35,7 +37,7 @@
 3. Run the server:
 
    ```bash
-   go run main.go
+   air
    ```
 
    This will start the web server on `localhost:8080`.
