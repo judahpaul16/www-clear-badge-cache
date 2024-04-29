@@ -22,6 +22,7 @@ RUN apk --no-cache add ca-certificates
 COPY --from=builder /app/main .
 COPY --from=builder /app/views ./views
 COPY --from=builder /app/static ./static
+COPY --from=builder /app/binaries ./binaries
 
 EXPOSE 8080
 
