@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"html/template"
 	"io"
@@ -73,22 +74,27 @@ func clearCache(c echo.Context) error {
 	// Check if binaries exist
 	if _, err := os.Stat("binaries"); os.IsNotExist(err) {
 		return jsonResponse(c, http.StatusInternalServerError, "Binaries not found.")
-	} else {
-		executable := "clear-badge-cache"
-		if strings.Contains(strings.ToLower(os.Getenv("GOOS")), "windows") {
-			executable += ".exe"
-		} else {
-			executable += ".sh"
-		}
-		cmd := exec.Command("go", "run", executable, url)
-		cmd.Dir = "binaries"
-		err := cmd.Run()
-		if err != nil {
-			return jsonResponse(c, http.StatusInternalServerError, fmt.Sprintf("Something went wrong, check your URL.<br>%v", err.Error()))
-		} else {
-			return jsonResponse(c, http.StatusOK, fmt.Sprintf("Image cache for `%s` cleared successfully!", c.FormValue("url")))
-		}
 	}
+
+	executable := "clear-badge-cache"
+	if strings.Contains(strings.ToLower(os.Getenv("GOOS")), "windows") {
+		executable += ".exe"
+	} else {
+		executable += ".sh"
+	}
+	cmd := exec.Command(executable, url)
+	cmd.Dir = "binaries"
+
+	var outBuf, errBuf bytes.Buffer
+	cmd.Stdout = &outBuf
+	cmd.Stderr = &errBuf
+
+	err := cmd.Run()
+	if err != nil {
+		return jsonResponse(c, http.StatusInternalServerError, fmt.Sprintf("Something went wrong, check your URL.<br>%v<br>%v", errBuf.String(), err.Error()))
+	}
+
+	return jsonResponse(c, http.StatusOK, fmt.Sprintf("Image cache for `%s` cleared successfully!", c.FormValue("url")))
 }
 
 func jsonResponse(c echo.Context, status int, message string) error {
