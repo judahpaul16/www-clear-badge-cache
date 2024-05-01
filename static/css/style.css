@@ -24,6 +24,57 @@ form {
     width: -webkit-fill-available;
 }
 
+#top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: flex-end;
+    background: #64b5f6;
+    color: white;
+    padding: 0.5em;
+    height: 0;
+    overflow: hidden;
+}
+
+h1 {
+    align-items: center;
+}
+
+#site-logo {
+    width: 30px;
+    margin: 0 auto;
+    margin-inline: 0.5em;
+}
+
+#site-title {
+    font-size: calc(3pt + 1vw);
+    font-family: Verdana, sans-serif;
+    font-weight: normal; 
+    margin: 0 auto 0 0;
+    display: inline-flex;
+    cursor: pointer;
+}
+
+#github-btn {
+    padding: 0.75em;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+    display: inline-flex;
+    width: fit-content;
+    margin-left: 1em;
+    font-size: calc(1px + 1vw);
+    align-items: center;
+}
+
+#github-img {
+    width: 20px;
+    margin: 0 auto;
+    margin-right: 0.5vw;
+}
+
 @media screen and (max-width: 768px) {
     body {
         width: 80%;

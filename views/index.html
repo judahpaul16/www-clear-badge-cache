@@ -10,6 +10,41 @@
     <link rel="stylesheet" href={{ static "css/style.css" }}>
 </head>
 <body>
+    <div id="top-bar" _="on load transition *height to 5% over 300ms">
+        <h1 id="site-title" class="crowded padding padding-block allcaps"
+            hx-get="/" hx-swap="outerHTML" hx-target="body">
+            <img id="site-logo" src="{{ static "img/favicon.ico" }}" alt="Clear Badge Cache" width=25>
+            Clear-Badge-Cache.com: A GitHub Cache Clearing Service made with Go and HTMX
+        </h1>
+        <a id="github-btn" class="crowded padding padding-block allcaps" _="
+            on load or mouseleave
+                repeat until event mouseenter
+                    set rand to Math.random() * 360
+                    transition
+                    *background-color
+                    to `hsl($rand 100% 75%)`
+                    over 600ms
+                end
+            end
+            "
+            href="https://github.com/judahpaul16/clear-badge-cache" target="_blank">
+            <img id="github-img" src="{{ static "img/github.svg" }}" alt="GitHub" width=25>CLI Repo
+        </a>
+        <a id="github-btn" class="crowded padding padding-block allcaps" _="
+            on load or mouseleave
+                repeat until event mouseenter
+                    set rand to Math.random() * 360
+                    transition
+                    *background-color
+                    to `hsl($rand 100% 75%)`
+                    over 600ms
+                end
+            end
+            "
+            href="https://github.com/judahpaul16/www-clear-badge-cache" target="_blank">
+            <img id="github-img" src="{{ static "img/github.svg" }}" alt="GitHub" width=25>Web Repo
+        </a>
+    </div>
     <div id="header">
         <h1>Clear Your GitHub Image Cache</h1>
         <p>Enter the URL of the GitHub repo you want to clear the cache for.</p>
