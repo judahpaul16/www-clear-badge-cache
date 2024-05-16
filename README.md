@@ -5,7 +5,7 @@
 [![GitHub](https://img.shields.io/github/license/judahpaul16/clear-badge-cache)](LICENSE)
 [![Website](https://img.shields.io/badge/website-https://clear--badge--cache.com-blue)](https://clear-badge-cache.com/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/judahpaul/www-clear-badge-cache)](https://hub.docker.com/r/judahpaul/www-clear-badge-cache)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/judahpaul16/www-clear-badge-cache/CI)](https://github.com/judahpaul16/www-clear-badge-cache/actions)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/judahpaul16/www-clear-badge-cache/workflow.yml?branch=main)](https://github.com/judahpaul16/www-clear-badge-cache/actions)
 
 [Clear-Badge-Cache.com](https://clear-badge-cache.com/) is a web-based tool designed to make it easier to clear the cache for GitHub badge images by providing a simple and intuitive user interface. This tool is based on the [Clear Badge Cache CLI tool](https://github.com/judahpaul16/clear-badge-cache) but adds a user-friendly web interface for the same functionality.
 
